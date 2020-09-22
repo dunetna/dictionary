@@ -1,5 +1,11 @@
 {% extends 'words/base.html' %}
 {% load static %}
 {% block content %}
-
+<form action="" method="get" class="mb-4">
+    <div class="form-inline">
+        <input id="search" name="search" class="form-control form-control-lg mr-3" type="text" placeholder="Type a word"> 
+        <button type="submit" class="btn"><img src="{% static 'img/search.svg' %}" alt="Search" width="32" height="32" title="Search" class="mr-3"></button>
+        <a href="add"><img src="{% static 'img/plus-circle.svg' %}" alt="Add" width="32" height="32" title="Add"></a>
+    </div>
+</form>
 {% endblock %}
