@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Definition, Word
+from .models import Word
 from .forms import WordForm, DefinitionInlineFormSet
 
 def index(request):
@@ -14,10 +14,9 @@ def index(request):
     return render(request, 'words/index.html', context)
 
 def show(request, word):    
-    # Get all definitions of selected word
-    definitions = Definition.objects.filter(word__name = word)
     # Add word and definitions to context to send them to the template
-    context = {'word': word, 'definitions': definitions}
+    word = Word.objects.get(name=word)
+    context = {'word': word, 'definitions': word.definition_set.all()}
     return render(request, 'words/show.html', context)
 
 def delete(request, word):
