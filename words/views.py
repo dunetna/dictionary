@@ -26,38 +26,23 @@ def delete(request, word):
     Word.objects.filter(name=word).delete()    
     return redirect('/')
 
-def add(request):
-    # Create an inline formset to add the word and its definitions at once
+def add_edit(request, word=None):
+    # If word is None, action is "add", otherwise is "edit"
+    # Create an inline formset class to add the word and its definitions at once
     DefinitionInlineFormSet = inlineformset_factory(Word, Definition, fields=('description',))
-    if request.method == 'POST':
-        # Process sent data
-        word_form = WordForm(request.POST)
-        if word_form.is_valid():            
-            created_word = word_form.save(commit=False)
-            description_formset = DefinitionInlineFormSet(request.POST, instance=created_word)
-            if description_formset.is_valid():
-                # If word and its descriptions are valid, save objects
-                created_word.save()
-                description_formset.save()
-                context = {'word': created_word, 'definitions': created_word.definition_set.all()}
-                return render(request, 'words/show.html', context)
-        else:
-            # If word_form is not valid, we must create inline formset with a new word instance 
-            word = Word()
-            description_formset = DefinitionInlineFormSet(request.POST, instance=word)
-    else:
-        # Create empty forms
+    # Create the base object depending on the action to do
+    if word is None:
+        # Empty object if action is "add"
         word = Word()
-        word_form = WordForm(instance=word)
-        description_formset = DefinitionInlineFormSet(instance=word)
-    return render(request, 'words/add.html', {'word_form': word_form, 'description_formset': description_formset})
-
-def edit(request, word):
-    DefinitionInlineFormSet = inlineformset_factory(Word, Definition, fields=('description',))
-    if request.method == 'POST':
-        # Process sent data
+    else:
+        # Initialized object if action is "edit"
         word = Word.objects.get(name=word)
-        word_form = WordForm(request.POST, instance=word)
+    if request.method == 'POST':
+        # Process sent data        
+        if word is None:
+            word_form = WordForm(request.POST)
+        else:
+            word_form = WordForm(request.POST, instance=word)
         if word_form.is_valid():            
             created_word = word_form.save(commit=False)
             description_formset = DefinitionInlineFormSet(request.POST, instance=created_word)
@@ -65,15 +50,14 @@ def edit(request, word):
                 # If word and its descriptions are valid, save objects
                 created_word.save()
                 description_formset.save()
+                # Redirect to show the new/edited word
                 context = {'word': created_word, 'definitions': created_word.definition_set.all()}
                 return render(request, 'words/show.html', context)
         else:
-            # If word_form is not valid, we must create inline formset with a new word instance 
+            # If word_form is not valid, we must create inline formset with the previous word to render it again
             description_formset = DefinitionInlineFormSet(request.POST, instance=word)
     else:
-        # Create empty forms
-        word = Word.objects.get(name=word)
+        # Create empty forms        
         word_form = WordForm(instance=word)
         description_formset = DefinitionInlineFormSet(instance=word)
-    return render(request, 'words/edit.html', {'word_form': word_form, 'description_formset': description_formset})
-
+    return render(request, 'words/add_edit.html', {'word_form': word_form, 'description_formset': description_formset})
