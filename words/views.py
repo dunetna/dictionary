@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Word
+from .models import Definition, Word
 
 def index(request):
     # Get partial or complete word to find
@@ -9,3 +9,10 @@ def index(request):
     # Send all words to the template
     context = {'words': words}
     return render(request, 'words/index.html', context)
+
+def show(request, word):    
+    # Get all definitions of selected word
+    definitions = Definition.objects.filter(word__name = word)
+    # Add word and definitions to context to send them to the template
+    context = {'word': word, 'definitions': definitions}
+    return render(request, 'words/show.html', context)
