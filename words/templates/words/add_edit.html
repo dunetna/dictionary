@@ -1,12 +1,13 @@
 {% extends 'words/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block content %}
 <form action="" method="post" class="mb-4">
     {% csrf_token %}
-    {{ word_form.as_p }}
+    {{ word_form | crispy }}
     {{ description_formset.management_form }}
     {% for df in description_formset %}
-        <div>{{ df }}</div>
+        <div>{{ df | crispy }}</div>
     {% endfor %}
     <input type="submit">
 </form>
