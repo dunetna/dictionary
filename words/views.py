@@ -39,7 +39,8 @@ def add(request):
                 # If word and its descriptions are valid, save objects
                 created_word.save()
                 description_formset.save()
-                return redirect('/')
+                context = {'word': created_word, 'definitions': created_word.definition_set.all()}
+                return render(request, 'words/show.html', context)
         else:
             # If word_form is not valid, we must create inline formset with a new word instance 
             word = Word()
@@ -64,7 +65,8 @@ def edit(request, word):
                 # If word and its descriptions are valid, save objects
                 created_word.save()
                 description_formset.save()
-                return redirect('/')
+                context = {'word': created_word, 'definitions': created_word.definition_set.all()}
+                return render(request, 'words/show.html', context)
         else:
             # If word_form is not valid, we must create inline formset with a new word instance 
             description_formset = DefinitionInlineFormSet(request.POST, instance=word)
