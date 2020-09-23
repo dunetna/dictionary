@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Definition, Word
 
 def index(request):
@@ -18,3 +18,10 @@ def show(request, word):
     # Add word and definitions to context to send them to the template
     context = {'word': word, 'definitions': definitions}
     return render(request, 'words/show.html', context)
+
+def delete(request, word):
+    # Remove word and its definitions and go to homepage
+    Word.objects.filter(name=word).delete()    
+    return redirect('/')
+
+
