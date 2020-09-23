@@ -1,7 +1,6 @@
-from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect
 from .models import Definition, Word
-from .forms import WordForm
+from .forms import WordForm, DefinitionInlineFormSet
 
 def index(request):
     context = {}
@@ -28,8 +27,6 @@ def delete(request, word):
 
 def add_edit(request, word=None):
     # If word is None, action is "add", otherwise is "edit"
-    # Create an inline formset class to add the word and its definitions at once
-    DefinitionInlineFormSet = inlineformset_factory(Word, Definition, fields=('description',))
     # Create the base object depending on the action to do
     if word is None:
         # Empty object if action is "add"
@@ -45,6 +42,7 @@ def add_edit(request, word=None):
             word_form = WordForm(request.POST, instance=word)
         if word_form.is_valid():            
             created_word = word_form.save(commit=False)
+            # Create an inline formset to add the word and its definitions at once
             description_formset = DefinitionInlineFormSet(request.POST, instance=created_word)
             if description_formset.is_valid():
                 # If word and its descriptions are valid, save objects
