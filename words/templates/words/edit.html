@@ -1,0 +1,13 @@
+{% extends 'words/base.html' %}
+{% load static %}
+{% block content %}
+<form action="" method="post" class="mb-4">
+    {% csrf_token %}
+    {{ word_form.as_p }}
+    {{ description_formset.management_form }}
+    {% for df in description_formset %}
+        <div>{{ df }}</div>
+    {% endfor %}
+    <input type="submit">
+</form>
+{% endblock %}

@@ -51,3 +51,27 @@ def add(request):
         description_formset = DefinitionInlineFormSet(instance=word)
     return render(request, 'words/add.html', {'word_form': word_form, 'description_formset': description_formset})
 
+def edit(request, word):
+    DefinitionInlineFormSet = inlineformset_factory(Word, Definition, fields=('description',))
+    if request.method == 'POST':
+        # Process sent data
+        word = Word.objects.get(name=word)
+        word_form = WordForm(request.POST, instance=word)
+        if word_form.is_valid():            
+            created_word = word_form.save(commit=False)
+            description_formset = DefinitionInlineFormSet(request.POST, instance=created_word)
+            if description_formset.is_valid():
+                # If word and its descriptions are valid, save objects
+                created_word.save()
+                description_formset.save()
+                return redirect('/')
+        else:
+            # If word_form is not valid, we must create inline formset with a new word instance 
+            description_formset = DefinitionInlineFormSet(request.POST, instance=word)
+    else:
+        # Create empty forms
+        word = Word.objects.get(name=word)
+        word_form = WordForm(instance=word)
+        description_formset = DefinitionInlineFormSet(instance=word)
+    return render(request, 'words/edit.html', {'word_form': word_form, 'description_formset': description_formset})
+
