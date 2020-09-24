@@ -1,0 +1,10 @@
+Features/Improvements that should be nice to have:
+* Pagination
+* More control error
+* Delete a word: confirmation of deletion
+* Add/Edit: allow to add/remove text areas for more/less definitions
+* Improve user interface
+* Add more tests
+* Refactor naming (word, name, definition, description)
+* Add headers with license to all source code files
+* Add more comments
