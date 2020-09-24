@@ -8,8 +8,14 @@
         <a href="add"><img src="{% static 'img/plus-circle.svg' %}" alt="Add" width="32" height="32" title="Add"></a>
     </div>
 </form>
-<h2>Results:</h2>
-{% for w in words %}
-    <div><a href="show/{{ w.name }}">{{ w.name }}</a></div>
-{% endfor %}
+{% if 'search' in request.GET %}
+    <h2>Results:</h2>
+    {% if words %}
+        {% for w in words %}
+            <div><a href="show/{{ w.name }}">{{ w.name }}</a></div>
+        {% endfor %}
+    {% else %}
+        <div>There are no results.</div>
+    {% endif %}
+{% endif %}   
 {% endblock %}
