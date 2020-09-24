@@ -1,16 +1,16 @@
 {% extends 'words/base.html' %}
 {% load static %}
 {% block content %}
-<div class="float-left">
-    <h1>{{ word }}</h1>
-    <ol>
-    {% for d in definitions %}
-        <li>{{ d }}</li>
-    {% endfor %}
-    </ol>
-</div>
-<div class="float-right">
-    <a href="/edit/{{ word }}"><img src="{% static 'img/pencil.svg' %}" alt="Edit" width="32" height="32" title="Edit"></a>
-    <a href="/delete/{{ word }}"><img src="{% static 'img/x-circle.svg' %}" alt="Delete" width="32" height="32" title="Delete"></a>
-</div>
+<h1>
+    {{ word }}
+    <span class="ml-2">
+        <a href="/edit/{{ word }}"><img src="{% static 'img/pencil.svg' %}" alt="Edit" width="32" height="32" title="Edit"></a>
+        <a href="/delete/{{ word }}"><img src="{% static 'img/x-circle.svg' %}" alt="Delete" width="32" height="32" title="Delete"></a>
+    </span>
+</h1>
+<ol>
+{% for d in definitions %}
+    <li>{{ d }}</li>
+{% endfor %}
+</ol>
 {% endblock %}
