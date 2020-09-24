@@ -6,4 +6,5 @@ class WordForm(forms.ModelForm):
         model = Word
         fields = ['name', ]
 
-DefinitionInlineFormSet = forms.inlineformset_factory(Word, Definition, fields=('description',))
+DefinitionInlineFormSetAdd = forms.inlineformset_factory(Word, Definition, fields=('description',), can_delete=False)
+DefinitionInlineFormSetEdit = forms.inlineformset_factory(Word, Definition, fields=('description',))

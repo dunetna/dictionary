@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Word
-from .forms import WordForm, DefinitionInlineFormSet
+from .forms import WordForm, DefinitionInlineFormSetAdd, DefinitionInlineFormSetEdit
 
 def index(request):
     context = {}
@@ -30,9 +30,11 @@ def add_edit(request, word=None):
     if word is None:
         # Empty object if action is "add"
         word = Word()
+        DefinitionInlineFormSet = DefinitionInlineFormSetAdd
     else:
         # Initialized object if action is "edit"
         word = Word.objects.get(name=word)
+        DefinitionInlineFormSet = DefinitionInlineFormSetEdit
     if request.method == 'POST':
         # Process sent data        
         if word is None:
