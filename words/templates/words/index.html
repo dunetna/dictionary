@@ -5,7 +5,6 @@
     <div class="form-inline">
         <input id="search" name="search" class="form-control form-control-lg mr-3" type="text" placeholder="Type a word" autofocus> 
         <button type="submit" class="btn"><img src="{% static 'img/search.svg' %}" alt="Search" width="32" height="32" title="Search" class="mr-3"></button>
-        <a href="add"><img src="{% static 'img/plus-circle.svg' %}" alt="Add" width="32" height="32" title="Add"></a>
     </div>
 </form>
 {% if 'search' in request.GET %}
@@ -17,5 +16,8 @@
     {% else %}
         <div>There are no results.</div>
     {% endif %}
-{% endif %}   
+{% endif %}  
+<div class="mt-3">
+    <a href="add"><img src="{% static 'img/plus-circle.svg' %}" alt="Add" width="32" height="32" title="Add"></a>
+</div> 
 {% endblock %}
