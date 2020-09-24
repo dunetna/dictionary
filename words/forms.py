@@ -10,7 +10,7 @@ class WordForm(forms.ModelForm):
         name = self.cleaned_data['name']
         if not name.isalpha():
             raise forms.ValidationError("This string must be a word")
-        return name        
+        return name.lower()
 
 DefinitionInlineFormSetAdd = forms.inlineformset_factory(Word, Definition, fields=('description',), can_delete=False)
 DefinitionInlineFormSetEdit = forms.inlineformset_factory(Word, Definition, fields=('description',))

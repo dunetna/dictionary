@@ -7,6 +7,7 @@ def index(request):
     # Get partial or complete word to find
     search = request.GET.get('search')
     if search:
+        search = search.lower()
         # Get all words starting with string introduced by user
         words = list(Word.objects.filter(name__startswith=search))
         # Send all words to the template
