@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Word
 from .forms import WordForm, DefinitionInlineFormSetAdd, DefinitionInlineFormSetEdit
 
+
 def index(request):
     context = {}
     # Get partial or complete word to find
@@ -14,16 +15,19 @@ def index(request):
         context.update(words=words)
     return render(request, 'words/index.html', context)
 
-def show(request, word):    
+
+def show(request, word):
     # Add word and definitions to context to send them to the template
     word = Word.objects.get(name=word)
     context = {'word': word, 'definitions': word.definition_set.all()}
     return render(request, 'words/show.html', context)
 
+
 def delete(request, word):
     # Remove word and its definitions and go to homepage
-    Word.objects.filter(name=word).delete()    
+    Word.objects.filter(name=word).delete()
     return redirect('/')
+
 
 def add_edit(request, word=None):
     # If word is None, action is "add", otherwise is "edit"
@@ -37,12 +41,12 @@ def add_edit(request, word=None):
         word = Word.objects.get(name=word)
         DefinitionInlineFormSet = DefinitionInlineFormSetEdit
     if request.method == 'POST':
-        # Process sent data        
+        # Process sent data
         if word is None:
             word_form = WordForm(request.POST)
         else:
             word_form = WordForm(request.POST, instance=word)
-        if word_form.is_valid():            
+        if word_form.is_valid():
             created_word = word_form.save(commit=False)
             # Create an inline formset to add the word and its definitions at once
             description_formset = DefinitionInlineFormSet(request.POST, instance=created_word)
@@ -57,7 +61,7 @@ def add_edit(request, word=None):
             # If word_form is not valid, we must create inline formset with the previous word to render it again
             description_formset = DefinitionInlineFormSet(request.POST, instance=word)
     else:
-        # Create empty forms        
+        # Create empty forms
         word_form = WordForm(instance=word)
         description_formset = DefinitionInlineFormSet(instance=word)
     return render(request, 'words/add_edit.html', {'word_form': word_form, 'description_formset': description_formset})

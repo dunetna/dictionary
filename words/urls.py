@@ -7,5 +7,4 @@ urlpatterns = [
     path('add', views.add_edit),
     path('edit/<word>', views.add_edit),
     path('delete/<word>', views.delete)
-    
 ]
